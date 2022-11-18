@@ -5,13 +5,38 @@
        <script src="https://d3js.org/d3.v7.min.js"></script>
 <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+<script src="https://unpkg.com/topojson-client@2"></script>
 <script src="main.js"></script>
+<style type="text/css">
+	.row,.align{
+  display:flex; 
+}
+.country {
+      stroke: #fff;
+      fill:pink;
+    } 
+    .align{
+    	background-color: rgb(48, 48, 48);
+    }
+</style>
     </head>
     <body>
        
 
 <div class="container">
- <svg id="my_dataviz" width="500" height="500"></svg>
+<div class="row">
+  <div class="col-xs-12 col-md-3 align">
+     <div class="col-xs-4" style="margin-top: -1%;">
+        <svg id="my_dataviz" width="400" height="500"></svg>
+     </div>
+     <div class="col-xs-4">
+       <svg id="my_dataviz1" width="300" height="500"></svg>
+     </div>
+   </div>
+
+
+ 
+</div>
 </div>
     </body>
     
