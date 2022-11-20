@@ -137,10 +137,7 @@ return{
             });
                geomap();
             
-    });
-     
-  
-     
+    });  
 });
 
 function wordCloud(data){
@@ -251,30 +248,6 @@ function drawEventCalendarView(twitter_csv,start,stop,begin,end)
 	let x_scl = d3.scaleTime().range([margin.left, innWidth-margin.right]).nice();
 		x_scl.domain([begin,end]).ticks(1440);
 
-		/*let x_axisT = d3.axisTop(x_scl)
-						.ticks(1440)
-					// .tickSizeInner(0) // the inner ticks will be of size 3
-      				// .tickSizeOuter(5)
-					.tickFormat(d3.timeFormat("%H:%M"));
-
-		svg.append('g')
-			.attr('id','xScaleT')
-			.attr('transform', `translate(0,${margin.top})`)
-			.attr('opacity', 0.5)
-			.call(x_axisT);*/
-
-	/*let x_axisB = d3.axisBottom(x_scl)
-					.ticks(2)
-					//.tickSizeInner(0) // the inner ticks will be of size 3
-	  				//.tickSizeOuter(5)
-					.tickFormat(d3.timeFormat("%H:%M"));
-
-		svg.append('g')
-			.attr('id','xScaleB')
-			.attr('transform', `translate(0,${innHeight-margin.bottom})`)
-			.attr('opacity', 0.5)
-			.call(x_axisB);*/
-
 	let y_scl = d3.scaleTime().range([innHeight-margin.bottom, margin.top]).nice();
 		y_scl.domain([stop,start]);
 		
@@ -356,8 +329,10 @@ function drawEventCalendarView(twitter_csv,start,stop,begin,end)
 				.attr('fill', d => color(d.Emotions))
 				.style('opacity',d => d.Uncertainity)
 				.attr('stroke-width',d => d.Uncertainity)
+				.on("click", function(d,i){console.log("on click");console.log(i); dataCloud=[]; i['Hashtags'].split("#").forEach(hashtag => {
+					dataCloud.push({"EventName": i['Event_Name'], "Hashtags" : hashtag, "size": 1});}); wordCloud(dataCloud)})
 				.on("mouseover", function(d,i) {
-					//console.log(d,i);
+					console.log(d,i);
 					d3.select(this).style("stroke-width",2).attr('opacity',2);
 					
 					tip.html(`Future Event: ${i.Event_Name} <br> Location: (${i.Latitude},${i.Longitude}) <br><br> Keywords:[${i.Hashtags.split(" ")}]`)
@@ -373,7 +348,8 @@ function drawEventCalendarView(twitter_csv,start,stop,begin,end)
 					tip.style("top", (event.pageY)+"px").style("left",(event.pageX)+"px");
 				}).transition()
 				.duration(1500)
-				.delay(600);
+				.delay(600)
+				
 				
 	function getSolidLine(k,l)
 	{
@@ -389,7 +365,8 @@ function drawEventCalendarView(twitter_csv,start,stop,begin,end)
 				.attr('opacity',0.1)
 				.style("stroke-width",0.6)
 				.on("mouseover", function(d,i) {
-					//console.log(d,i);
+					console.log("Event hover: ")
+					console.log(i)
 					d3.select(this).style("stroke-width",2).attr('opacity',1);	
 					tip.html(`Future Events: <br> ${events}`)
 							.style("visibility", "visible")
@@ -397,10 +374,14 @@ function drawEventCalendarView(twitter_csv,start,stop,begin,end)
 							.style("top", (event.pageY)+"px");			
 				})	
 				.on("mouseout", function(d,i) {
+					console.log("Event hover: ")
+					console.log(i)
 					d3.select(this).style("stroke-width",0.6).attr('opacity',0.1);
 					tip.style("visibility", "hidden");
 				})
 				.on("mousemove",function(d,i) {
+					console.log("Event hover: ")
+					console.log(i)
 					tip.style("top", (event.pageY)+"px").style("left",(event.pageX)+"px");
 				}).transition()
 				.duration(1500)
