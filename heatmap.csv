@@ -1,0 +1,57 @@
+Category,Emotion,Count
+political,anger,1
+political,disgust,1
+political,happy,5
+political,joy,1
+political,fear,0
+political,sadness,0
+political,surprise,0
+Protest,anger,2
+Protest,disgust,2
+Protest,happy,3
+Protest,fear,0
+Protest,joy,0
+Protest,sadness,0
+Protest,surprise,0
+Public Holidays,surprise,2
+Public Holidays,sadness,1
+Public Holidays,anger,1
+Public Holidays,happy,14
+Public Holidays,joy,1
+Public Holidays,fear,2
+Public Holidays,disgust,0
+Social Gathering,anger,1
+Social Gathering,fear,4
+Social Gathering,happy,23
+Social Gathering,joy,7
+Social Gathering,surprise,2
+Social Gathering,disgust,0
+Social Gathering,sadness,0
+Sports,anger,2
+Sports,happy,19
+Sports,joy,0
+Sports,fear,0
+Sports,disgust,0
+Sports,sadness,0
+Sports,surprise,0
+Summit,anger,2
+Summit,happy,25
+Summit,joy,2
+Summit,surprise,1
+Summit,disgust,0
+Summit,sadness,0
+Summit,fear,0
+Traffic,anger,4
+Traffic,happy,4
+Traffic,disgust,0
+Traffic,sadness,0
+Traffic,surprise,0
+Traffic,fear,0
+Traffic,joy,0
+Weather forecast,happy,2
+Weather forecast,sadness,0
+Weather forecast,surprise,0
+Weather forecast,joy,0
+Weather forecast,anger,0
+Weather forecast,fear,0
+Weather forecast,disgust,0

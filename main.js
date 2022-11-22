@@ -120,12 +120,13 @@ return{
 }
 
    // This will load your two CSV files and store them into two arrays.
-     Promise.all([d3.csv('mockdata.csv'),d3.json("world-topo.json"), d3.csv('twitter_data_pro.csv', convertCsv)])
+     Promise.all([d3.csv('mockdata.csv'),d3.json("world-topo.json"), d3.csv('twitter_data_pro.csv', convertCsv), d3.csv('heatmap.csv')])
         .then(function (values) {
             data1=values[0];
             data2=values[1];
             eventsdata = values[0];
-           // wordCloud(eventsdata);
+            heatmapdata = values[3];
+			heatMap(heatmapdata)
      eventsdata.forEach(function(d) {
       d.size = +d.size;
     });
@@ -605,8 +606,6 @@ var projection = d3.geoEquirectangular()
             .attr( "d", geoPath )
             .attr("class","country");  
         
-    
-
 
   //radius = Math.min(width, height) / 2;
 
@@ -833,7 +832,165 @@ else{
       if(i===4){return count+parseInt(d.data.count);}
       else {return ""}} ); 
 
-    
+	}
+    //------------------------------------
 
-}
+const heatMap = (data)=>{
+	const margin = {top: 80, right: 25, bottom: 80, left: 60},
+	width = 350 - margin.left - margin.right,
+	height = 350 - margin.top - margin.bottom;
+  
+  // append the svg object to the body of the page
+  var svg = d3.select("#my_heatmapviz")
+  .append("svg")
+  .attr("width", width + margin.left + margin.right)
+  .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+  .attr("transform",
+		"translate(" + margin.left + "," + margin.top + ")");
+  
+  //Read the data
+
+	var div = d3.select("body").append("div")
+		.attr("class", "tooltip")
+		.style("opacity", 0);
+	// Labels of row and columns -> unique identifier of the column called 'Category' and 'Emotion'
+	const myGroups = Array.from(new Set(data.map(d => d.Category)))
+	const myVars = Array.from(new Set(data.map(d => d.Emotion)))
+	console.log(myGroups);
+	console.log(myVars);
+	// Build X scales and axis:333
+	const x = d3.scaleBand()
+	  .range([ 0, width ])
+	  .domain(myGroups)
+	  .padding(0.05);
+	svg.append("g")
+	  .style("font-size", 15)
+	  .attr("transform", `translate(0, ${height})`)
+	  //.attr("transform", "rotate(-65)")
+	  .call(d3.axisBottom(x))
+	  .selectAll("text")
+			  .style("text-anchor", "end")
+			  // .attr("dx", "-.8em")
+			  // .attr("dy", ".15em")
+			  .attr("transform", "rotate(-35)" )
+  
+	  svg.select(".domain").remove()
+	  for(let i=0;i<=7;i++){
+		svg.select("line").remove()
+	  }
+	  //svg.select("line").remove()
+  
+  
+	// Build Y scales and axis:
+	const y = d3.scaleBand()
+	  .range([ height, 0 ])
+	  .domain(myVars)
+	  .padding(0.05);
+	svg.append("g")
+	  .style("font-size", 15)
+  
+	  .call(d3.axisLeft(y).tickSize(0))
+	  .select(".domain").remove();
+  
+  
+	// Build color scale
+	const myColor = d3.scaleSequential()
+	  .interpolator(d3.interpolateInferno)
+	  .domain([25,0])
+	  console.log(myColor(0))
+  
+  
+  let tooltip = d3.select("#my_heatmapviz")
+			  .append("div")
+			  .style("position", "absolute")
+			  .style("width","auto")
+			  .style("height","auto")
+			  .style("text-align","center")
+			  .style("z-index", "10")
+			  .style("visibility", "hidden")
+			  .style("padding", "15px")
+			  .style("background", "black")
+			  .style("border", "2px")
+			  .style("margin", "5px")
+			  .style("border-radius", "8px")
+			  .style("color", "white")
+			  .style("font-family","sans-serif")
+			  .style("font-size","15px")
+			  .style("line-height","20px")
+			  .style("pointer-events","none");
+	// Three function that change the tooltip when user hover / move / leave a cell
+	const mouseover = function(event,d) {
+	  tooltip
+		.style("opacity", 1)
+	  d3.select(this)
+		.style("stroke", "black")
+		.style("stroke-width", 4)
+		.style("opacity", 1)
+	}
+  
+	const mousemove = function(event,d) {
+  
+		div.transition()
+		  .duration(20)
+		  .style("opacity",1);
+		  div.html("There are "+ d.Count+" events which are "+d.Category+" and "+d.Emotion)
+		  .style("font-weight","bold")
+		  .style("left", (event.pageX) + "px")
+		  .style("top", (event.pageY - 28) + "px");
+		// tooltip.style("visibility", "hidden");
+		// tooltip.style("top", (event.pageY)+"px").style("left",(event.pageX)+"px");
+	}
+	
+	const mouseleave = function(event,d) {
+	  div
+		.style("opacity", 0)
+	  d3.select(this)
+		.style("stroke", "black")
+		.style("stroke-width", 2)
+		.style("opacity", 0.8)
+  
+		div.transition()
+		  .duration(100)
+		  .style("opacity", 0);
+	}
+  
+	// add the squares
+	svg.selectAll()
+	  .data(data, function(d) { return d.Category+':'+d.Emotion;})
+	  .join("rect")
+		.attr("x", function(d) { return x(d.Category) })
+		.attr("y", function(d) { return y(d.Emotion) })
+		.attr("rx", 4)
+		.attr("ry", 4)
+		.attr("width", x.bandwidth() )
+		.attr("height", y.bandwidth() )
+		.style("fill", function(d) { return myColor(d.Count)} )
+		.style("stroke-width", 2)
+		.style("stroke", "black")
+		.style("opacity", 0.8)
+	  .on("mouseover", mouseover)
+	  .on("mousemove", mousemove)
+	  .on("mouseleave", mouseleave)
+  }
+  
+  // Add title to graph
+  // svg.append("text")
+  //         .attr("x", 0)
+  //         .attr("y", -50)
+  //         .attr("text-anchor", "left")
+  //         .style("font-size", "22px")
+  //         .text("A d3.js heatmap");
+  //
+  // // Add subtitle to graph
+  // svg.append("text")
+  //         .attr("x", 0)
+  //         .attr("y", -20)
+  //         .attr("text-anchor", "left")
+  //         .style("font-size", "14px")
+  //         .style("fill", "grey")
+  //         .style("max-width", 400)
+  //         .text("A short description of the take-away message of this chart.");
+  
+
 

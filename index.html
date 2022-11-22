@@ -21,6 +21,19 @@
     .align{
     	background-color: rgb(48, 48, 48);
     }
+    div.tooltip {
+        position: absolute;
+        text-align: center;
+        width: 120px;
+        height: auto;
+        padding: 2px;
+        font: 15px arial;
+        background: white;
+        border: 2px black solid;
+        border-radius: 4px;
+
+        pointer-events: none;
+}
 </style>
     </head>
     <body>
@@ -62,6 +75,7 @@
     <div class="col-sm-4">
     </div>
     <div class="col-sm-4">
+      <svg id="my_heatmapviz" width="400" height="400" ></svg>
     </div>
 </div>
 </div>
