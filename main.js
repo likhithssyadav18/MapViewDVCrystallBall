@@ -871,13 +871,72 @@ var projection = d3.geoEquirectangular()
       d3.group(data1, d => d.Location), ([key, value]) => ({key, value})
     );
 //console.log(bubbles);
-
+   let tooltip1 = d3.select("#my_dataviz")
+			  .append("div")
+			  .style("position", "absolute")
+			  .style("width","auto")
+			  .style("height","auto")
+			  .style("text-align","center")
+			  .style("z-index", "10")
+			  .style("visibility", "hidden")
+			  .style("padding", "15px")
+			  .style("background", "black")
+			  .style("border", "2px")
+			  .style("margin", "5px")
+			  .style("border-radius", "8px")
+			  .style("color", "white")
+			  .style("font-family","sans-serif")
+			  .style("font-size","15px")
+			  .style("line-height","20px")
+			  .style("pointer-events","none");
+	var div = d3.select("body").append("div")
+		.attr("class", "tooltip")
+		.style("opacity", 0);		  
+	// Three function that change the tooltip when user hover / move / leave a cell
+	const mouseover1 = function(event,d) {
+	  tooltip1
+		.style("opacity", 1)
+	  d3.select(this)
+		.style("stroke", "black")
+		.style("stroke-width", 0)
+		.style("opacity", 1)
+	}
+  
+	const mousemove1 = function(event,d) {
+        console.log(event);
+        a=event["explicitOriginalTarget"]["__data__"]["data"];
+		div.transition()
+		  .duration(20)
+		  .style("opacity",1);
+		  div.html("Event:"+ a.eventName+"<br>Location : "+a.label)
+		  .style("font-weight","bold")
+		  .style("left", (event.pageX) + "px")
+		  .style("top", (event.pageY - 28) + "px");
+		// tooltip.style("visibility", "hidden");
+		// tooltip.style("top", (event.pageY)+"px").style("left",(event.pageX)+"px");
+	}
+	
+	const mouseleave1 = function(event,d) {
+	  div
+		.style("opacity", 0)
+	  d3.select(this)
+		.style("stroke", "black")
+		.style("stroke-width", 0)
+		.style("opacity", 0.8)
+  
+		div.transition()
+		  .duration(100)
+		  .style("opacity", 0);
+	}
     
   pies.append("path")
     .attr('d',arc)
       .attr("fill",function(d,i){
            return color[i];
       })
+      .on("mouseover", mouseover1)
+	  .on("mousemove", mousemove1)
+	  .on("mouseleave", mouseleave1)
       .on("click", function(d, i) {
         dataCloud=[]
         i.data.hashtags.split("#").forEach(hashtag =>{
