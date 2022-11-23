@@ -120,13 +120,22 @@ return{
 }
 
    // This will load your two CSV files and store them into two arrays.
-     Promise.all([d3.csv('mockdata.csv'),d3.json("world-topo.json"), d3.csv('twitter_data_pro.csv', convertCsv), d3.csv('heatmap.csv')])
+     Promise.all([d3.csv('mockdata.csv'),d3.json("world-topo.json"), d3.csv('twitter_data_pro.csv', convertCsv), d3.csv('heatmap.csv'),d3.csv("final2.csv"),d3.csv("emotions.csv")])
         .then(function (values) {
             data1=values[0];
             data2=values[1];
             eventsdata = values[0];
             heatmapdata = values[3];
+            data4=values[4];
+            data5=values[5];
+            emotion(data4,data5);
 			heatMap(heatmapdata)
+			console.log(data1);
+			var v=[];
+			data1.forEach(function(d){
+			v.push( {"EventName": d["Event Name"], "Hashtags": d["Hashtags"], "size": 1})
+		});
+			wordCloud(v);
      eventsdata.forEach(function(d) {
       d.size = +d.size;
     });
@@ -141,10 +150,146 @@ return{
     });  
 });
 
+
+function emotion(data1,data2)
+{
+	var margin = {top: 30, right: 30, bottom: 50, left: 30},
+    width = 300 - margin.left - margin.right,
+    height = 150 - margin.top - margin.bottom;
+
+    var barsvg = d3.select("#my_dataviz2")
+  .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", `translate(${margin.left}, ${margin.top})`);
+
+var EventNameDate=[{"EventName":"50 Year Anniversary of Pride March","Event Date":"03/11/2022","Tweet_Timestamp":"10/25/2022 22:00"}]
+
+
+  selectedEvents=[]
+EventNameDate.map(function(e){
+  data1.map(function(d){
+    console.log(e)
+    console.log(e.EventName+" "+d["Event_Name"]+" event date:"+e.EventDate)
+  if(e.EventName==d["Event_Name"]  && e["Tweet_Timestamp"]==d["Tweet_Timestamp"]){
+    selectedEvents.push(d);
+  }
+})
+})
+console.log(selectedEvents)
+// selectedEventsSorted=[]
+
+// hourSorted=function(d){ console.log(d.Hour);return d["Hour"];};
+// console.log(hourSorted);
+// selectedEvents.sort()
+// console.log(selectedEvents);
+
+
+  var x = d3.scaleBand()
+    .domain([0,24])
+    .range([ 0, width])
+    .domain(selectedEvents.map(d => d.Hour))
+    .padding(0.2);
+    barsvg.append("g")
+    .attr("transform", `translate(0, ${height})`)
+    .call(d3.axisBottom(x))
+    .selectAll("text")
+      .attr("transform", "translate(-10,0)rotate(-45)")
+      .style("text-anchor", "end");
+
+  // Add Y axis
+  var y = d3.scaleLinear()
+    .domain([0, d3.max(selectedEvents,d=>{return d["Count"]})])
+    .range([ height, 0]);
+  barsvg.append("g")
+    .call(d3.axisLeft(y));
+
+  // Bars
+  barsvg.selectAll("mybar")
+    .data(selectedEvents)
+    .enter()
+    .append("rect")
+      .attr("x",d => x(d.Hour))
+      .attr("y", d => y(d.Count))
+      .attr("width", x.bandwidth())
+      .attr("height", d => height - y(d.Count))
+      .attr("fill", "steelblue")
+
+
+// ------------------------------------------------------------------------
+
+
+
+selectedEventsEmotions=[]
+EventNameDate.map(function(e){
+  data2.map(function(d){
+    console.log(e)
+    console.log(e.EventName+" "+d["Event Name"]+" event date:"+e.EventDate)
+  if(e.EventName==d["Event Name"]){
+    dict={}
+    dict["Anger"]=+d["Anger"]
+    dict["Disgust"]=+d["Disgust"]
+    dict["Fear"]=+d["Fear"]
+    dict["Joy"]=+d["Joy"]
+    dict["Sadness"]=+d["Sadness"]
+    dict["Surprise"]=+d["Surprise"]
+    selectedEventsEmotions.push(dict);
+  }
+})
+})
+console.log(selectedEventsEmotions)
+
+    barsvg1 = d3.select("#emotion_viz")
+  .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", `translate(${margin.left}, ${margin.top})`);
+  
+    x = d3.scaleBand()
+    .range([ 0, width])
+    .domain(["Anger","Disgust","Fear","Joy","Sadness","Surprise"])
+    .padding(0.2);
+    barsvg1.append("g")
+    .attr("transform", `translate(0, ${height})`)
+    .call(d3.axisBottom(x))
+    .selectAll("text")
+      .attr("transform", "translate(-10,0)rotate(-45)")
+      .style("text-anchor", "end");
+
+  // Add Y axis
+  y = d3.scaleLinear()
+    .domain([0, 1])
+    .range([ height, 0]);
+  barsvg1.append("g")
+    .call(d3.axisLeft(y));
+
+    var color = d3.scaleOrdinal()
+    .domain(["Anger","Disgust","Fear","Joy","Sadness","Surprise"])
+    .range(['#FF0000','#800080','#FFA500','#90EE90','#00008B','#FFFF00'])
+var keyOfEmotions=Object.keys(selectedEventsEmotions[0]);
+console.log(keyOfEmotions);
+
+  // Bars
+  barsvg1.selectAll("mybar")
+    .data(keyOfEmotions)
+    .enter()
+    .append("rect")
+      .attr("x",d => x(d))
+      .attr("y", d => y(selectedEventsEmotions[0][d]))
+      .attr("width", x.bandwidth())
+      .attr("height", d => height - y(selectedEventsEmotions[0][d]))
+      .attr("fill", function(d){ return color(d);})
+
+}
+
+
+
 function wordCloud(data){
   var margin = {top: 0, right: 20, bottom: 20, left: 20},
     width = 400 - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom;
+    height = 300 - margin.top - margin.bottom;
 
 var fill = d3.scaleOrdinal().range(d3.schemeDark2);
 
@@ -837,8 +982,8 @@ else{
 
 const heatMap = (data)=>{
 	const margin = {top: 80, right: 25, bottom: 80, left: 60},
-	width = 350 - margin.left - margin.right,
-	height = 350 - margin.top - margin.bottom;
+	width = 400 - margin.left - margin.right,
+	height = 400 - margin.top - margin.bottom;
   
   // append the svg object to the body of the page
   var svg = d3.select("#my_heatmapviz")

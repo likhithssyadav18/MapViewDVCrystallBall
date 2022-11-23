@@ -1,0 +1,85 @@
+Event Name,Userid,Anger,Disgust,Fear,Joy,Sadness,Surprise,total
+50 Year Anniversary of Pride March,3,0.1,0,0.2,0.4,0.1,0.2,1
+All Saint's Day,1,0.1,0.1,0,0.4,0.2,0.2,1
+Arizona Weather forecast,1,0.2,0.1,0,0.45,0.2,0.05,1
+AZ election campaign,8,0.3,0.1,0.1,0.25,0.2,0.05,1
+Bieber Concert,1,0.2,0.1,0.15,0.45,0.1,0,1
+BMS Talk,1,0.2,0.1,0.15,0.4,0.15,0,1
+Boxing Day,6,0.2,0.1,0.15,0.4,0.15,0,1
+BTS,1,0.2,0,0.1,0.5,0.1,0.1,1
+Central Pennsylvania Festival of the Arts,1,0.05,0,0,0.5,0.2,0.25,1
+CES (Consumer Electronics Show),6,0.1,0,0,0.5,0.2,0.2,1
+Champions League,1,0.4,0,0,0.45,0.1,0.05,1
+Cherry Creek Arts Festival,1,0.1,0,0,0.6,0.15,0.15,1
+China town Traffic,1,0.5,0.2,0.1,0,0.1,0.1,1
+Christmas'22,12,0.1,0,0.1,0.7,0.1,0,1
+Cloud Summit,1,0.2,0,0.1,0.6,0.1,0,1
+Commonwealth Games,2,0.2,0.1,0.15,0.4,0.15,0,1
+CVPR 2022,1,0.1,0,0,0.5,0.2,0.25,1.05
+Day of the Dead,1,0.1,0,0,0.5,0.2,0.25,1.05
+EdTech Summit,1,0.1,0,0,0.5,0.2,0.25,1.05
+European Elections,4,0.3,0,0.1,0.3,0.2,0.1,1
+Farmer's protest,15,0.4,0.2,0.2,0,0.1,0.1,1
+FIFA World Cup,2,0.3,0.1,0.1,0.3,0.2,0,1
+Film Festival,1,0.1,0,0,0.5,0.25,0.2,1.05
+FINA World Swimming Championships (25m),3,0.1,0,0,0.5,0.2,0.25,1.05
+Flight strike,1,0.3,0.1,0.2,0,0.2,0.2,1
+food day meet,1,0.05,0,0,0.5,0.2,0.25,1
+Football Match,3,0.1,0,0,0.7,0,0.2,1
+Global Climate change strike,2,0.2,0,0.2,0.3,0.2,0.1,1
+GOBELINS' Youtube channel,1,0.1,0,0,0.5,0.25,0.2,1.05
+Graduation Ceremony,1,0,0,0,0.8,0.2,0,1
+Halloween Party,4,0.1,0,0,0.7,0,0.2,1
+Hungama Concert,6,0.1,0,0.1,0.6,0.1,0.1,1
+I-395 Highway Traffic,1,0.4,0.1,0.1,0,0.3,0.1,1
+ICAI,12,0.2,0,0.1,0.5,0.1,0.1,1
+ICICT 2022,1,0.1,0,0,0.5,0.2,0.2,1
+ICML 2022 (Tech conference),2,0.05,0,0,0.5,0.05,0.2,0.8
+Independence Day,3,0.2,0,0.1,0.6,0.1,0,1
+Ireland horse riding,1,0.1,0,0.1,0.8,0,0,1
+Jammu Traffic,1,0.4,0.2,0.1,0,0.3,0,1
+Juneteenth,3,0.1,0,0.1,0.65,0.05,0.1,1
+Kannan Gill - Standup,1,0.1,0,0,0.7,0,0.2,1
+Kpop,1,0.05,0,0,0.65,0.1,0.2,1
+Kuttiyatam,1,0.1,0,0,0.7,0,0.2,1
+Labor Day,1,0.05,0,0,0.5,0.2,0.25,1
+LandScape 2022,1,0.05,0,0,0.5,0.2,0.25,1
+Marine Cops Training,1,0,0,0.2,0.5,0,0.3,1
+Mecca Madina,6,0.1,0,0.1,0.6,0.1,0.1,1
+Memorial Day,4,0.1,0,0,0.7,0,0.2,1
+Motivational Talks,11,0.2,0,0.1,0.6,0.1,0,1
+Motor Traffic,1,0.4,0.2,0.1,0,0.3,0,1
+Movie,1,0.1,0,0.1,0.65,0.05,0.1,1
+Movie shoot,1,0.1,0,0.1,0.65,0.05,0.1,1
+Mumbai Traffic updates,1,0.4,0.2,0,0,0.3,0.1,1
+Olympics 2023,6,0.2,0,0.1,0.5,0.1,0.1,1
+Paris Strike,1,0.3,0.1,0.2,0,0.3,0.1,1
+PAXWest 2022,1,0,0,0,0.6,0.1,0.3,1
+Phoenix - Anubhav Singh Bassi Live,1,0,0,0,0.6,0.1,0.3,1
+Platinum Jubilee Bank Holiday,6,0,0,0,0.6,0,0.4,1
+Polkacity Metaverse,1,0.1,0,0.1,0.4,0.1,0.3,1
+Post Malone,1,0,0,0,0.6,0,0.4,1
+Skydiving,3,0,0,0.3,0.5,0,0.2,1
+Soccer Legion,14,0.1,0,0,0.7,0,0.2,1
+special corporate Seminar,1,0.2,0,0,0.55,0,0.25,1
+Standup Comedy - Jerry Seinfeld,1,0.2,0,0,0.6,0.1,0.1,1
+Strike Finland,1,0.3,0.1,0.2,0,0.4,0,1
+Study Abroad Webinar,6,0.1,0,0.1,0.65,0.05,0.1,1
+T20WorldCup2022,2,0.3,0.1,0,0.4,0.1,0.1,1
+Tater Treat,1,0.2,0,0,0.55,0,0.25,1
+Thanks Giving 2022,18,0.1,0,0,0.65,0,0.25,1
+The Dark Side of the Void event,1,0.1,0,0.3,0,0.35,0.25,1
+Tokyo2020,1,0.3,0.1,0,0.4,0.1,0.1,1
+TommorowLand Concert,1,0.2,0,0,0.55,0,0.25,1
+Traffic,1,0.5,0.2,0,0,0.3,0,1
+traffic Jam...at Akurli Road,1,0.4,0.2,0,0,0.4,0,1
+Traffic updates,1,0.4,0.2,0,0,0.4,0,1
+Ukrain bombed,1,0.1,0.3,0.2,0,0.4,0,1
+US Open,5,0.2,0,0,0.55,0,0.25,1
+WAR campaign,2,0.3,0.2,0.2,0,0.3,0,1
+Weather forecast,1,0.1,0,0.2,0.4,0.2,0.1,1
+Weeknd Concert,1,0.2,0,0,0.6,0,0.2,1
+Wimbeldon 2022,12,0.2,0,0,0.55,0,0.25,1
+Wimbeldon 2022 Final,12,0.3,0,0,0.55,0,0.15,1
+Womens World Cup,8,0.1,0,0,0.55,0.2,0.15,1
+World War 3 memorial meet,1,0.1,0.2,0.1,0,0.6,0,1
