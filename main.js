@@ -282,6 +282,75 @@ console.log(keyOfEmotions);
       .attr("height", d => height - y(selectedEventsEmotions[0][d]))
       .attr("fill", function(d){ return color(d);})
 
+
+  
+
+input = data1.filter(obj => {
+				if (obj.Event_Name === "50 Year Anniversary of Pride March") {
+				return true;
+				}
+			});
+console.log("input",input);
+barsvg2 = d3.select("#my_dataviz3")
+  .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", `translate(${margin.left}, ${margin.top})`);
+	
+
+	let tweet_range=d3.extent(input,d=>new Date(d.Tweet_Timestamp));
+	console.log("Tweet",tweet_range);
+	
+	let count_range=d3.extent(input,d=>d.Count);
+	console.log("date",tweet_range[1]);
+	let x_range=[new Date(tweet_range[1].getTime()-15*1000*3600*24),new Date(tweet_range[1].getTime()+15*1000*3600*24)]
+	console.log("range",x_range);
+	let steps_x=30;
+	
+	let x1=d3.scaleTime()
+		.range([0,width]);
+	
+	y1 = d3.scaleLinear()
+  .range([ height, 0]);
+
+	x1.domain([new Date(tweet_range[1].getTime()-15*1000*3600*24),new Date(tweet_range[1].getTime()+15*1000*3600*24)]);		
+	y1.domain([0, 5 ]);
+	//let y_axis1=d3.axisLeft(y).tickFormat(d3.format("d")).ticks(5);
+	
+
+    console.log("x1y1",x1,y1);
+
+	
+    xAxis1 = barsvg2.append("g")
+    .attr("transform", "translate(0," + height + ")")
+    yAxis1 = barsvg2.append("g")
+  .attr("class", "myYaxis") 
+
+	//let x_axis1=d3.axisBottom(x).tickFormat(d3.timeFormat("%d-%m")).ticks(steps_x);
+	//console.log(x_axis1);
+	xAxis1.call(d3.axisBottom(x1).tickFormat(d3.timeFormat("%d-%m")).ticks(steps_x))
+	     .selectAll('text')                   
+		.style('text-anchor', 'middle')     
+		.attr('dx','-30px')             
+		.attr('dy','0px')
+		.style('font-size','8px')								
+		.attr('transform','rotate(-90)');
+
+	yAxis1.call(d3.axisLeft(y1));	
+	
+	barsvg2.selectAll("mybar")
+		.data(input)
+		.enter()
+		.append('rect')
+		.attr("x",function(c){
+			console.log("xdate",c.Tweet_Timestamp);
+			return x1(new Date(c.Tweet_Timestamp))+1;
+		})
+		.attr('y',(d,i)=>y1(1))
+		.attr('width',10)
+		.attr('height', d=>height-y1(d.Count));					   
+
 }
 
 
@@ -305,7 +374,10 @@ var wordCloudSvg = d3.select("#my_cloudviz")
  wordCloudSvg.append("rect")
  .attr("width", "100%")
  .attr("height", "100%")
- .attr("fill", "black")
+ //.attr("fill", "black")
+ .style("stroke", "black")
+ .style("stroke-width", 1);
+
  wordCloudSvg.append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -847,16 +919,16 @@ var projection = d3.geoEquirectangular()
       .append("g")
       .attr("transform", "translate(" + 300 / 2 + "," + 300 / 2 + ")");
 
-      svg1.append("rect").attr("x",-90).attr("y",200).attr("width", 15).attr("height",15).attr("fill", "#4169e1")
-      svg1.append("rect").attr("x",-90).attr("y",220).attr("width", 15).attr("height",15).attr("fill", "#1e90ff")
-      svg1.append("rect").attr("x",-90).attr("y",240).attr("width", 15).attr("height",15).attr("fill", "#87cefa")
-      svg1.append("rect").attr("x",-90).attr("y",260).attr("width", 15).attr("height",15).attr("fill", "#87ceeb")
-      svg1.append("rect").attr("x",-90).attr("y",280).attr("width", 15).attr("height",15).attr("fill", "#b0c4de")
-      svg1.append("text").attr("x", -70).attr("y", 210).text("tommorow").style("font-size", "16px").style("fill","white").attr("alignment-baseline","middle")
-      svg1.append("text").attr("x", -70).attr("y", 230).text("<=week").style("font-size", "16px").style("fill","white").attr("alignment-baseline","middle")
-      svg1.append("text").attr("x", -70).attr("y", 250).text("<=2week").style("font-size", "16px").style("fill","white").attr("alignment-baseline","middle")
-      svg1.append("text").attr("x", -70).attr("y", 270).text("<=30days").style("font-size", "16px").style("fill","white").attr("alignment-baseline","middle")
-      svg1.append("text").attr("x", -70).attr("y", 290).text(">30days").style("font-size", "16px").style("fill","white").attr("alignment-baseline","middle")
+      svg1.append("rect").attr("x",-90).attr("y",160).attr("width", 15).attr("height",15).attr("fill", "#4169e1")
+      svg1.append("rect").attr("x",-90).attr("y",180).attr("width", 15).attr("height",15).attr("fill", "#1e90ff")
+      svg1.append("rect").attr("x",-90).attr("y",200).attr("width", 15).attr("height",15).attr("fill", "#87cefa")
+      svg1.append("rect").attr("x",-90).attr("y",220).attr("width", 15).attr("height",15).attr("fill", "#87ceeb")
+      svg1.append("rect").attr("x",-90).attr("y",240).attr("width", 15).attr("height",15).attr("fill", "#b0c4de")
+      svg1.append("text").attr("x", -70).attr("y", 170).text("tommorow").style("font-size", "16px").style("fill","white").attr("alignment-baseline","middle")
+      svg1.append("text").attr("x", -70).attr("y", 190).text("<=week").style("font-size", "16px").style("fill","white").attr("alignment-baseline","middle")
+      svg1.append("text").attr("x", -70).attr("y", 210).text("<=2week").style("font-size", "16px").style("fill","white").attr("alignment-baseline","middle")
+      svg1.append("text").attr("x", -70).attr("y", 230).text("<=30days").style("font-size", "16px").style("fill","white").attr("alignment-baseline","middle")
+      svg1.append("text").attr("x", -70).attr("y", 250).text(">30days").style("font-size", "16px").style("fill","white").attr("alignment-baseline","middle")
     // create the spiral, borrowed from http://bl.ocks.org/syntagmatic/3543186
     var points1 = d3.range(start, end + 0.001, (end - start) / 1000);
 
