@@ -16,11 +16,12 @@
 }
 .country {
       stroke: #fff;
-      fill:pink;
+      fill:rgba(248, 215, 68, 0.896);
     } 
     .align{
-    	background-color: rgb(48, 48, 48);
+    	/* background-color: rgb(48, 48, 48); */
     }
+    
     div.tooltip {
         position: absolute;
         text-align: center;
@@ -42,8 +43,9 @@
 
 <div class="container">
 <div class="row">
-  <div class="col-sm-5">
-    <div class="row-2" style="width:auto">
+  <div class="col-sm-5" style="border: medium solid black; border-radius: 25px; 
+  margin-right: 10px; margin-left: 10px; margin-top: 10px; margin-bottom: 10px;">
+    <div class="row-2" style="width:auto; margin-top: 1%; margin-left: 1%;">
     <label for="points">Timeline:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <label>From:</label>&nbsp;<input type="date" value="" min="2022-09-01" max="2022-12-31" id="d_start" name="points" step="1"/><!--onchange="getDateRange(twitter_csv)"/>-->&nbsp;&nbsp;&nbsp;
     <label>To:</label>&nbsp;<input type="date" value="" min="2022-09-01" max="2022-12-31" id="d_end" name="points" step="1" /><!--onchange="getDateRange(twitter_csv)"/>-->&nbsp;&nbsp;&nbsp;
@@ -55,9 +57,10 @@
 <div id="my_eventviz" class="border border-dark rounded p-2 mb-2 bg-light shadow-sm">
         <svg id="eventSvg" onload="onLoad()" width="700" height="400" style="margin-top: -4%;"></svg>
 </div></div>
-  <div class="col-sm-7">
+  <div class="col-sm-7" style="border: medium solid black; border-radius: 25px;
+  margin-right: 10px; margin-left: 10px; margin-top: 10px; margin-bottom: 10px;">
   <div class="col-xs-12 col-md-3 align">
-     <div class="col-xs-4" style="margin-top: -1%;">
+     <div class="col-xs-4" style="margin-top: 1%;">
         <svg id="my_dataviz" width="400" height="400"></svg>
      </div>
      <div class="col-xs-4">
@@ -67,17 +70,20 @@
   </div>
 </div>
 <div class="row">
-  <div class="col-sm-4">
+  <div class="col-sm-4" style="border: medium solid black; border-radius: 25px;
+  margin-right: 10px; margin-left: 10px; margin-top: 10px; margin-bottom: 10px;">
     <div id="my_cloudviz1" >
-      <svg id="my_cloudviz" width="400" height="300" ></svg>
+      <svg id="my_cloudviz" width="400" height="300"style="border-radius: 25px; margin-top: 2%;margin-left: -2%;" ></svg>
     </div>
     
     </div>
-    
-    <div class="col-sm-4">
-      <svg id="my_heatmapviz" width="400" height="400" style="margin-top: -22%;" ></svg>
+
+    <div class="col-sm-4" style="border: medium solid black; border-radius: 25px;
+    margin-right: 10px; margin-left: 10px; margin-top: 10px; margin-bottom: 10px;">
+      <svg id="my_heatmapviz" width="400" height="400" style="margin-top: -10%;" ></svg>
     </div>
-    <div class="col-sm-4">
+    <div class="col-sm-4" style="border: medium solid black; border-radius: 25px;
+    margin-right: 10px; margin-left: 10px; margin-top: 10px; margin-bottom: 10px;">
       <svg id="my_dataviz2"></svg>
       
     <svg id="my_dataviz3"></svg>

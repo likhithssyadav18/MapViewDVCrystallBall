@@ -356,6 +356,7 @@ barsvg2 = d3.select("#my_dataviz3")
 
 
 function wordCloud(data){
+	
   var margin = {top: 0, right: 20, bottom: 20, left: 20},
     width = 400 - margin.left - margin.right,
     height = 300 - margin.top - margin.bottom;
@@ -371,11 +372,10 @@ var wordCloudSvg = d3.select("#my_cloudviz")
     .attr("transform",
           "translate(" + margin.left + "," + margin.top + ")")
 
- wordCloudSvg.append("rect")
- .attr("width", "100%")
+ wordCloudSvg.attr("width", "100%")
  .attr("height", "100%")
  //.attr("fill", "black")
- .style("stroke", "black")
+ //.style("stroke", "black")
  .style("stroke-width", 1);
 
  wordCloudSvg.append("g")
@@ -880,7 +880,7 @@ var projection = d3.geoEquirectangular()
 			  .style("z-index", "10")
 			  .style("visibility", "hidden")
 			  .style("padding", "15px")
-			  .style("background", "black")
+		   .style("background", "black")
 			  .style("border", "2px")
 			  .style("margin", "5px")
 			  .style("border-radius", "8px")
@@ -983,11 +983,11 @@ var projection = d3.geoEquirectangular()
       svg1.append("rect").attr("x",-90).attr("y",200).attr("width", 15).attr("height",15).attr("fill", "#87cefa")
       svg1.append("rect").attr("x",-90).attr("y",220).attr("width", 15).attr("height",15).attr("fill", "#87ceeb")
       svg1.append("rect").attr("x",-90).attr("y",240).attr("width", 15).attr("height",15).attr("fill", "#b0c4de")
-      svg1.append("text").attr("x", -70).attr("y", 170).text("tommorow").style("font-size", "16px").style("fill","white").attr("alignment-baseline","middle")
-      svg1.append("text").attr("x", -70).attr("y", 190).text("<=week").style("font-size", "16px").style("fill","white").attr("alignment-baseline","middle")
-      svg1.append("text").attr("x", -70).attr("y", 210).text("<=2week").style("font-size", "16px").style("fill","white").attr("alignment-baseline","middle")
-      svg1.append("text").attr("x", -70).attr("y", 230).text("<=30days").style("font-size", "16px").style("fill","white").attr("alignment-baseline","middle")
-      svg1.append("text").attr("x", -70).attr("y", 250).text(">30days").style("font-size", "16px").style("fill","white").attr("alignment-baseline","middle")
+      svg1.append("text").attr("x", -70).attr("y", 170).text("tommorow").style("font-size", "16px").style("fill","black").attr("alignment-baseline","middle")
+      svg1.append("text").attr("x", -70).attr("y", 190).text("<=week").style("font-size", "16px").style("fill","black").attr("alignment-baseline","middle")
+      svg1.append("text").attr("x", -70).attr("y", 210).text("<=2week").style("font-size", "16px").style("fill","black").attr("alignment-baseline","middle")
+      svg1.append("text").attr("x", -70).attr("y", 230).text("<=30days").style("font-size", "16px").style("fill","black").attr("alignment-baseline","middle")
+      svg1.append("text").attr("x", -70).attr("y", 250).text(">30days").style("font-size", "16px").style("fill","black").attr("alignment-baseline","middle")
     // create the spiral, borrowed from http://bl.ocks.org/syntagmatic/3543186
     var points1 = d3.range(start, end + 0.001, (end - start) / 1000);
 
