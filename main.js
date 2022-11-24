@@ -115,7 +115,15 @@ return{
     Category: d['Category (for our reference)'],
     Emotions: d['Emotion'],
     Uncertainity: +d['Uncertainity'],
-    Hashtags: d['Hashtags']
+    Hashtags: d['Hashtags'],
+	NPMI: +d['NPMI'],
+													Link_Ratio: +d.Link_Ratio,
+													Hashtag_Ratio: +d.Hashtag_Ratio,
+													User_Credibility: +d.User_Credibility,
+													User_Diversity:	+d['User_Diversity'],
+													Degree_Centrality:	+d['Degree_Centrality'],
+													Tweet_Similarity: +d['Tweet_Similarity'],
+													PMI: +d['PMI']
 }
 }
 
@@ -537,36 +545,94 @@ function drawEventCalendarView(twitter_csv,start,stop,begin,end)
 						.join('g')
 			  			.attr('class', 'barGroup');		
 	
-		barGroups
-				.append('circle')
-				.attr('transform', `translate(${margin.left},0)`)
-				.attr('cx',d => x_scl(new Date(d.Event_Timestamp)))
-				.attr('cy',d => y_scl(new Date(d.Event_Datestamp)))
-				.attr('r', 10)
-				.attr('stroke', 'blue')
-				.attr('fill', d => color(d.Emotions))
-				.style('opacity',d => d.Uncertainity)
-				.attr('stroke-width',d => d.Uncertainity)
-				.on("click", function(d,i){console.log("on click");console.log(i); dataCloud=[]; i['Hashtags'].split("#").forEach(hashtag => {
-					dataCloud.push({"EventName": i['Event_Name'], "Hashtags" : hashtag, "size": 1});}); wordCloud(dataCloud)})
-				.on("mouseover", function(d,i) {
-					console.log(d,i);
-					d3.select(this).style("stroke-width",2).attr('opacity',2);
-					
-					tip.html(`Future Event: ${i.Event_Name} <br> Location: (${i.Latitude},${i.Longitude}) <br><br> Keywords:[${i.Hashtags.split(" ")}]`)
-						.style("visibility", "visible")
-						.style("left",(event.pageX)+"px")
-						.style("top", (event.pageY)+"px");			
-				})	
-				.on("mouseout", function(d,i) {
-					d3.select(this).style("stroke-width",1).attr('opacity',0.25);
-					tip.style("visibility", "hidden");
-				})
-				.on("mousemove",function(d,i) {
-					tip.style("top", (event.pageY)+"px").style("left",(event.pageX)+"px");
-				}).transition()
-				.duration(1500)
-				.delay(600)
+					barGroups
+						  .append('circle')
+						  .attr('transform', `translate(${margin.left},0)`)
+						  .attr('cx',d => x_scl(new Date(d.Event_Timestamp)))
+						  .attr('cy',d => y_scl(new Date(d.Event_Datestamp)))
+						  .attr('r', 10)
+						  .attr('stroke', 'blue')
+						  .attr('fill', d => color(d.Emotions))
+						  .style('opacity',d => d.Uncertainity)
+						  .attr('stroke-width',d => d.Uncertainity)
+						  .on("mouseover", function(d,i) {
+							  //console.log(d,i);
+							  d3.select(this).style("stroke-width",2).attr('opacity',2);
+							  
+							  tip.html(`Future Event: ${i.Event_Name} <br> Location: (${i.Latitude},${i.Longitude}) <br><br> Keywords:[${i.Hashtags.split(" ")}]`)
+								  .style("visibility", "visible")
+								  .style("left",(event.pageX)+"px")
+								  .style("top", (event.pageY)+"px");			
+						  })	
+						  .on("mouseout", function(d,i) {
+							  d3.select(this).style("stroke-width",1).attr('opacity',0.25);
+							  tip.style("visibility", "hidden");
+						  })
+						  .on("mousemove",function(d,i) {
+							  tip.style("top", (event.pageY)+"px").style("left",(event.pageX)+"px");
+						  })
+						  // .on('click',function(d,i) {
+						  // 	//console.log(d,i);
+						  // 	let temp=[{"Event_Name":0,"Tweet_Datestamp":0,"Event_Datestamp":0}]
+						  // 	temp[0]["Event_Name"]=i.Event_Name;
+						  // 	temp[0]["Tweet_Datestamp"]=i.Tweet_Datestamp;
+						  // 	temp[0]["Event_Datestamp"]=i.Event_Datestamp;
+						  // 	console.log(temp)			
+						  // })
+						  .on("click", function(d,i){
+							  let temp = [ 
+								  [
+									  {axis:"NPMI",value:i.NPMI},
+									  {axis:"Link Ratio",value:i.Link_Ratio},
+									  {axis:"Hashtag Ratio",value:i.Hashtag_Ratio},
+									  {axis:"User Credibility",value:i.User_Credibility},
+									  {axis:"User Diversity",value:i.User_Diversity},
+									  {axis:"Degree Centrality",value:i.Degree_Centrality},
+									  {axis:"Tweet Similarity",value:i.Tweet_Similarity}
+								  ]
+							  ];
+							  console.log(temp)
+							  tip.html("<p>Rank-SVM View</p><div id='tipDiv'><svg id='tipSVG'></svg></div>")
+								  .style("visibility", "visible")
+								  .style("left",(event.pageX)+"px")
+								  .style("top", (event.pageY)+"px")
+								  .transition().duration(200);
+				  
+							  //const margin = {top: 90, right: 70, bottom:90, left: 70},
+							  let margin_tip = {top: 70, right: 30, bottom: 70, left: 60};
+							  let svg_rad = document.querySelector('#tipSVG');
+							  let width = parseInt(getComputedStyle(svg_rad).width, 10);
+							  let height = parseInt(getComputedStyle(svg_rad).height, 10);
+							  let inwidth = 600 - margin_tip.left - margin_tip.right;
+							  let inheight = 500 - margin_tip.top - margin_tip.bottom;
+							  
+							  // d3.select("#tipDiv")
+							  // 	.append("svg")
+							  // 	.attr("id","tipSVG")
+							  // 	.attr("width", width - margin.left - margin.right)
+							  // 	.attr("height", height - margin.top - margin.bottom)
+							  // 	  .append("g")
+							  // 	.attr("transform","translate(" + margin.left + "," + margin.top + ")");
+							  
+							  let color_temp=d3.scaleOrdinal(d3.schemeAccent).domain(temp[0]).range(["#A52A2A"]);
+							  let radarChartOptions_temp={
+									  w: inwidth,
+									  h: inheight,
+									  margin: margin_tip,
+									  maxValue: 0.5,
+									  levels: 10,
+									  roundStrokes: true,
+									  color: color_temp
+									};			
+							  RadarChart("#tipSVG", temp, radarChartOptions_temp);
+						  })
+						  .on("dblclick", function(){
+							  tip.selectAll('*').remove();
+							  tip.style("visibility", "hidden");
+						  })
+						  .transition()
+						  .duration(1500)
+						  .delay(600);
 				
 				
 	function getSolidLine(k,l)
@@ -668,6 +734,186 @@ function drawEventCalendarView(twitter_csv,start,stop,begin,end)
 			}
 		}
 	}	
+}
+
+function RadarChart(id,data,options) {
+	d3.select(id).select("svg").remove();
+	let cfg = {
+	 w: 200,				
+	 h: 200,
+	 margin: {top: 20, right: 20, bottom: 20, left: 20}, 
+	 levels: 3,				
+	 maxValue: 0, 			
+	 labelFactor: 1.25, 	
+	 wrapWidth: 60, 		
+	 opacityArea: 0.35, 	
+	 dotRadius: 4, 			
+	 opacityCircles: 0.1, 	
+	 strokeWidth: 2, 		
+	 roundStrokes: false,
+	 color: d3.scaleOrdinal(d3.schemeAccent)	
+	};
+	
+	if('undefined' !== typeof options){
+	  for(let i in options){
+		if('undefined' !== typeof options[i]){ cfg[i] = options[i]; }
+	  }
+	}
+
+	let maxValue = Math.max(cfg.maxValue, d3.max(data, function(i){return d3.max(i.map(function(o){return o.value;}))}));
+		
+	let allAxis = (data[0].map(function(i, j){return i.axis})),	
+		total = allAxis.length,					
+		radius = Math.min(cfg.w/2, cfg.h/2), 	
+		Format = d3.format(''),			 	
+		angleSlice = Math.PI * 2 / total;
+	
+	let rScale = d3.scaleLinear()
+		.range([0, radius])
+		.domain([0, maxValue]);
+	
+	let svg = d3.select(id).append("svg")
+			.attr("width",  cfg.w + cfg.margin.left + cfg.margin.right)
+			.attr("height", cfg.h + cfg.margin.top + cfg.margin.bottom)
+			.attr("class", "radar"+id);
+		
+	let g = svg.append("g")
+			.attr("transform", "translate(" + (cfg.w/2 + cfg.margin.left) + "," + (cfg.h/2 + cfg.margin.top) + ")");
+	
+	let filter = g.append('defs').append('filter').attr('id','glow'),
+		feGaussianBlur = filter.append('feGaussianBlur').attr('stdDeviation','2.5').attr('result','coloredBlur'),
+		feMerge = filter.append('feMerge'),
+		feMergeNode_1 = feMerge.append('feMergeNode').attr('in','coloredBlur'),
+		feMergeNode_2 = feMerge.append('feMergeNode').attr('in','SourceGraphic');
+
+	let axisGrid = g.append("g").attr("class", "axisWrapper");
+	
+	axisGrid.selectAll(".levels")
+	   .data(d3.range(1,(cfg.levels+1)).reverse())
+	   .enter()
+		.append("circle")
+		.attr("class", "gridCircle")
+		.attr("r", function(d, i){return radius/cfg.levels*d;})
+		.style("fill", "#CDCDCD")
+		.style("stroke", "black")
+		.style("fill-opacity", cfg.opacityCircles)
+		.style("filter" , "url(#glow)");
+
+	axisGrid.selectAll(".axisLabel")
+	   .data(d3.range(1,(cfg.levels+1)).reverse())
+	   .enter().append("text")
+	   .attr("class", "axisLabel")
+	   .attr("x", 4)
+	   .attr("y", function(d){return -d*radius/cfg.levels;})
+	   .attr("dy", "0.4em")
+	   .style("font-size", "12px")
+	   .attr("fill", "#737373")
+	   .text(function(d,i) { return Format(maxValue * d/cfg.levels); });
+	
+	let axis = axisGrid.selectAll(".axis")
+		.data(allAxis)
+		.enter()
+		.append("g")
+		.attr("class", "axis");
+
+	axis.append("line")
+		.attr("x1", 0)
+		.attr("y1", 0)
+		.attr("x2", function(d, i){ return rScale(maxValue*1.1) * Math.cos(angleSlice*i - Math.PI/2); })
+		.attr("y2", function(d, i){ return rScale(maxValue*1.1) * Math.sin(angleSlice*i - Math.PI/2); })
+		.attr("class", "line")
+		.style("stroke", "black")
+		.style("stroke-width", "2px");
+
+	axis.append("text")
+		.attr("class", "legend")
+		.style("font-size", "12.5px")
+		.attr("text-anchor", "middle")
+		.attr("dy", "0.25em")
+		.attr("x", function(d, i){ return rScale(maxValue * cfg.labelFactor) * Math.cos(angleSlice*i - Math.PI/2); })
+		.attr("y", function(d, i){ return rScale(maxValue * cfg.labelFactor) * Math.sin(angleSlice*i - Math.PI/2); })
+		.text(function(d){return d})
+		.call(textWrap, cfg.wrapWidth);
+
+	let radarLine = d3.lineRadial()
+		.radius(function(d) { return rScale(d.value); })
+		.angle(function(d,i) {	return i*angleSlice; })
+		.curve(d3.curveLinearClosed);
+		
+	if(cfg.roundStrokes) {
+		radarLine.curve(d3.curveCardinalClosed);
+	}
+				
+	let radialBlobWrapper = g.selectAll(".radarWrapper")
+		.data(data)
+		.enter().append("g")
+		.attr("class", "radarWrapper");
+			
+	radialBlobWrapper
+		.append("path")
+		.attr("class", "radarArea")
+		.attr("d", function(d,i) { return radarLine(d); })
+		.style("fill", function(d,i) { return cfg.color(i); })
+		.style("fill-opacity", cfg.opacityArea);
+		
+	radialBlobWrapper.append("path")
+		.attr("class", "radarStroke")
+		.attr("d", function(d,i) { return radarLine(d); })
+		.style("stroke-width", cfg.strokeWidth + "px")
+		.style("stroke", function(d,i) { return cfg.color(i); })
+		.style("fill", "none")
+		.style("filter" , "url(#glow)");		
+	
+	radialBlobWrapper.selectAll(".radarCircle")
+		.data(function(d,i) { return d; })
+		.enter().append("circle")
+		.attr("class", "radarCircle")
+		.attr("r", cfg.dotRadius)
+		.attr("cx", function(d,i){ return rScale(d.value) * Math.cos(angleSlice*i - Math.PI/2); })
+		.attr("cy", function(d,i){ return rScale(d.value) * Math.sin(angleSlice*i - Math.PI/2); })
+		.style("fill", function(d,i,j) { return cfg.color(j); })
+		.style("fill-opacity", 0.8);
+
+	let radialBlobCircleWrapper = g.selectAll(".radarCircleWrapper")
+		.data(data)
+		.enter().append("g")
+		.attr("class", "radarCircleWrapper");
+		
+	radialBlobCircleWrapper.selectAll(".radarInvisibleCircle")
+		.data(function(d,i) { return d; })
+		.enter().append("circle")
+		.attr("class", "radarInvisibleCircle")
+		.attr("r", cfg.dotRadius*1.5)
+		.attr("cx", function(d,i){ return rScale(d.value) * Math.cos(angleSlice*i - Math.PI/2); })
+		.attr("cy", function(d,i){ return rScale(d.value) * Math.sin(angleSlice*i - Math.PI/2); })
+		.style("fill", "none")
+		.style("pointer-events", "all");
+
+	function textWrap(text, width) {
+	  text.each(function() {
+		let text = d3.select(this),
+			words = text.text().split(/\s+/).reverse(),
+			word,
+			line = [],
+			lineNumber = 0,
+			lineHeight = 1.4,
+			y = text.attr("y"),
+			x = text.attr("x"),
+			dy = parseFloat(text.attr("dy")),
+			tspan = text.text(null).append("tspan").attr("x", x).attr("y", y).attr("dy", dy + "em");
+			
+		while (word = words.pop()) {
+		  line.push(word);
+		  tspan.text(line.join(" "));
+		  if (tspan.node().getComputedTextLength() > width) {
+			line.pop();
+			tspan.text(line.join(" "));
+			line = [word];
+			tspan = text.append("tspan").attr("x", x).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+		  }
+		}
+	  });
+	}
 }
 
 function getDateRange(twitter_csv)
